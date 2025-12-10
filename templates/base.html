@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Monitoreo ambiental para la salud</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+  <header class="header">
+    <nav class="nav">
+      <a href="{{ url_for('home') }}" class="nav-brand">Vital Routes Dev</a>
+
+      <ul class="nav-menu">
+        {% if logueado %}
+        <li>👤 {{ session["username"] }}</li>
+        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+        {% else %}
+        <li><a href="{{ url_for('login') }}">Ingresar</a></li>
+        <li><a href="{{ url_for('register') }}">Registrarse</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+
+  <main class="main">{% block content %}{% endblock %}</main>
+
+  <footer class="footer">
+    <p>Proyecto académico · Redgnar055</p>
+  </footer>
+</body>
+
+</html>

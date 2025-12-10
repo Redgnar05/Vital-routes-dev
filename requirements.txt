@@ -1,0 +1,9 @@
+Flask==3.1.0
+Flask-PyMongo==3.0.1
+Werkzeug==3.1.0
+requests==2.32.3
+pymongo==4.9.0
+dnspython==2.6.1
+python-dotenv==1.0.1
+Jinja2==3.1.4
+gunicorn

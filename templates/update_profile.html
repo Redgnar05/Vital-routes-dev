@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="form-section">
+  <h2>Actualizar datos de salud</h2>
+
+  <form method="POST" action="{{ url_for('update_profile') }}">
+
+    <label>Edad</label>
+    <input type="number" name="edad" min="1" max="120" value="{{ user.edad or '' }}">
+
+    <label>Sexo</label>
+    <select name="sexo">
+      <option value="">Selecciona</option>
+      <option value="Masculino" {% if user.sexo=='Masculino' %}selected{% endif %}>Masculino</option>
+      <option value="Femenino" {% if user.sexo=='Femenino' %}selected{% endif %}>Femenino</option>
+      <option value="Otro" {% if user.sexo=='Otro' %}selected{% endif %}>Otro</option>
+    </select>
+
+    <label>¿Tienes problemas respiratorios?</label>
+    <input type="checkbox" name="respiratorio" value="Si"
+      {% if user.respiratorio == 'Si' %} checked {% endif %}> Sí
+
+    <label>Nivel de actividad física</label>
+    <select name="actividad">
+      <option value="">Selecciona</option>
+      <option value="Baja" {% if user.actividad=='Baja' %}selected{% endif %}>Baja</option>
+      <option value="Moderada" {% if user.actividad=='Moderada' %}selected{% endif %}>Moderada</option>
+      <option value="Alta" {% if user.actividad=='Alta' %}selected{% endif %}>Alta</option>
+    </select>
+
+    <button type="submit" class="btn-main">Guardar cambios</button>
+  </form>
+
+  {% if msg %}
+    <div class="alert">{{ msg }}</div>
+  {% endif %}
+</section>
+
+{% endblock %}
