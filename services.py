@@ -3,6 +3,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
+# Cargar .env
 load_dotenv()
 
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
@@ -11,6 +12,9 @@ LANG = os.getenv("LANG", "es")
 WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 
+# ============================================================
+# OBTENER CLIMA DESDE API REAL
+# ============================================================
 def obtener_clima(ciudad: str):
     params = {
         "q": ciudad,
@@ -38,6 +42,9 @@ def obtener_clima(ciudad: str):
         return None
 
 
+# ============================================================
+# DATOS SIMULADOS (AIRE Y RUIDO)
+# ============================================================
 def obtener_calidad_aire_mock(ciudad: str):
     return {"pm25": 35, "pm10": 60, "aqi": 80, "categoria": "Moderada"}
 
@@ -46,27 +53,62 @@ def obtener_ruido_mock(ciudad: str):
     return {"ruido_db": 65, "fuente_probable": "Tráfico vehicular"}
 
 
-def calcular_riesgo_salud(clima, aire, ruido):
+# ============================================================
+# CALCULAR RIESGO PERSONALIZADO DEL USUARIO
+# ============================================================
+def calcular_riesgo_salud(clima, aire, ruido, user):
     score = 0
+
     temp = clima["temp"]
-
-    if temp < 5 or temp > 32:
-        score += 2
-    elif temp < 10 or temp > 28:
-        score += 1
-
-    if clima["humedad"] > 80:
-        score += 1
-
+    humedad = clima["humedad"]
     aqi = aire["aqi"]
-    if aqi > 150:
+    db = ruido["ruido_db"]
+
+    # ----------------------------------------
+    # 1) TEMPERATURA + SENSIBILIDADES
+    # ----------------------------------------
+    if temp < 5 or temp > 32:
         score += 3
-    elif aqi > 100:
+    elif temp < 10 or temp > 28:
         score += 2
-    elif aqi > 50:
+
+    if user.get("sensible_calor") == "Si" and temp > 28:
+        score += 2
+
+    if user.get("sensible_frio") == "Si" and temp < 10:
+        score += 2
+
+    # ----------------------------------------
+    # 2) HUMEDAD
+    # ----------------------------------------
+    if humedad > 80:
         score += 1
 
-    db = ruido["ruido_db"]
+    # ----------------------------------------
+    # 3) CALIDAD DEL AIRE
+    # ----------------------------------------
+    if aqi <= 50:
+        score += 0
+    elif aqi <= 100:
+        score += 1
+    elif aqi <= 150:
+        score += 3
+    else:
+        score += 5
+
+    # Condiciones respiratorias
+    if user.get("asma") == "Si" or user.get("respiratorio") == "Si":
+        if aqi > 80:
+            score += 3
+        if aqi > 120:
+            score += 5
+
+    if user.get("alergias") == "Si" and aqi > 70:
+        score += 2
+
+    # ----------------------------------------
+    # 4) RUIDO AMBIENTAL
+    # ----------------------------------------
     if db > 80:
         score += 3
     elif db > 70:
@@ -74,33 +116,141 @@ def calcular_riesgo_salud(clima, aire, ruido):
     elif db > 60:
         score += 1
 
-    if score <= 2:
-        return {"score": score, "nivel": "Bajo", "color": "verde"}
-    elif score <= 5:
-        return {"score": score, "nivel": "Medio", "color": "amarillo"}
-    return {"score": score, "nivel": "Alto", "color": "rojo"}
+    if user.get("sensibilidad_ruido") == "Si" and db > 60:
+        score += 2
 
+    # ----------------------------------------
+    # 5) SALUD GENERAL
+    # ----------------------------------------
+    if user.get("hipertension") == "Si":
+        score += 2
 
-def generar_recomendaciones(riesgo, clima, aire, ruido):
-    recomendaciones = []
+    if user.get("diabetes") == "Si":
+        score += 1
 
-    if riesgo["nivel"] == "Bajo":
-        recomendaciones.append("Las condiciones generales son favorables para actividades al aire libre.")
-    elif riesgo["nivel"] == "Medio":
-        recomendaciones.append("Evita esfuerzos físicos intensos.")
+    edad = int(user.get("edad", 0) or 0)
+
+    if edad >= 65:
+        score += 3
+    elif edad >= 50:
+        score += 1
+
+    # ----------------------------------------
+    # 6) ACTIVIDAD FÍSICA
+    # ----------------------------------------
+    act = user.get("actividad")
+
+    if act == "Alto" and (temp > 28 or temp < 10):
+        score += 2
+
+    if act == "Alto" and aqi > 100:
+        score += 3
+
+    # ----------------------------------------
+    # 7) EXPOSICIÓN AL AIRE LIBRE
+    # ----------------------------------------
+    aire_libre = user.get("aire_libre")
+
+    if aire_libre == "Más de 4h":
+        score += 2
+    elif aire_libre == "2-4h":
+        score += 1
+
+    # ----------------------------------------
+    # CLASIFICACIÓN FINAL
+    # ----------------------------------------
+    if score <= 5:
+        nivel = "Bajo"
+        color = "verde"
+    elif score <= 12:
+        nivel = "Medio"
+        color = "amarillo"
     else:
-        recomendaciones.append("Permanece en interiores si es posible.")
+        nivel = "Alto"
+        color = "rojo"
 
-    if aire["aqi"] > 100:
-        recomendaciones.append("Restricción para personas con asma o problemas respiratorios.")
+    return {"score": score, "nivel": nivel, "color": color}
 
-    if ruido["ruido_db"] > 70:
-        recomendaciones.append("Elige rutas más tranquilas o usa protección auditiva.")
 
-    ahora = datetime.now().hour
-    sugerencia_horario = (
-        "Antes de las 9:00 o después de las 18:00." if riesgo["nivel"] == "Alto"
-        else "Evita el sol intenso entre 12:00 y 16:00."
-    )
+# ============================================================
+# GENERADOR DE RECOMENDACIONES PERSONALIZADAS
+# ============================================================
+def generar_recomendaciones(riesgo, clima, aire, ruido, user):
+    recomendaciones = []
+    temp = clima["temp"]
+    aqi = aire["aqi"]
+    db = ruido["ruido_db"]
+
+    # ----------------------------------------
+    # 1) BASE SEGÚN RIESGO
+    # ----------------------------------------
+    if riesgo["nivel"] == "Bajo":
+        recomendaciones.append("Las condiciones son buenas para actividades al aire libre.")
+    elif riesgo["nivel"] == "Medio":
+        recomendaciones.append("Evita esfuerzos intensos y mantente hidratado.")
+    else:
+        recomendaciones.append("El riesgo es alto. Limita tu tiempo al aire libre.")
+
+    # ----------------------------------------
+    # 2) PERSONALIZADA POR CALOR/FRÍO
+    # ----------------------------------------
+    if temp > 30:
+        recomendaciones.append("Evita el sol directo y toma agua frecuentemente.")
+        if user.get("sensible_calor") == "Si":
+            recomendaciones.append("Eres sensible al calor: evita salir entre 12:00 y 16:00.")
+
+    if temp < 10:
+        recomendaciones.append("Abrigarte bien si sales.")
+        if user.get("sensible_frio") == "Si":
+            recomendaciones.append("Tu sensibilidad al frío requiere salidas cortas.")
+
+    # ----------------------------------------
+    # 3) CALIDAD DEL AIRE
+    # ----------------------------------------
+    if aqi > 100:
+        recomendaciones.append("Evita ejercicios intensos al aire libre por la contaminación.")
+
+    if (user.get("asma") == "Si" or user.get("respiratorio") == "Si") and aqi > 80:
+        recomendaciones.append("Usa cubrebocas al salir debido a tu condición respiratoria.")
+
+    if user.get("alergias") == "Si" and aqi > 70:
+        recomendaciones.append("El aire puede agravar tus alergias.")
+
+    # ----------------------------------------
+    # 4) RUIDO
+    # ----------------------------------------
+    if db > 70:
+        recomendaciones.append("El ruido es alto. Prefiere rutas tranquilas.")
+
+    if user.get("sensibilidad_ruido") == "Si":
+        recomendaciones.append("Eres sensible al ruido: evita avenidas grandes.")
+
+    # ----------------------------------------
+    # 5) ACTIVIDAD FÍSICA Y TRANSPORTE
+    # ----------------------------------------
+    actividad = user.get("actividad")
+    transporte = user.get("transporte")
+
+    if actividad == "Alto" and (temp > 28 or aqi > 100):
+        recomendaciones.append("Haz ejercicio en interiores hoy.")
+
+    if transporte == "Caminata" and aqi > 120:
+        recomendaciones.append("No es recomendable caminar por la contaminación.")
+
+    if transporte == "Bicicleta" and db > 70:
+        recomendaciones.append("Busca ciclovías menos ruidosas.")
+
+    if transporte == "Transporte público" and aqi > 120:
+        recomendaciones.append("Usa cubrebocas en el transporte público.")
+
+    # ----------------------------------------
+    # 6) HORARIO SUGERIDO
+    # ----------------------------------------
+    if riesgo["nivel"] == "Alto":
+        sugerencia_horario = "Evita salir entre 11:00 y 17:00."
+    elif riesgo["nivel"] == "Medio":
+        sugerencia_horario = "Mejor salir antes de las 10:00 o después de las 18:00."
+    else:
+        sugerencia_horario = "Puedes salir a cualquier hora."
 
     return recomendaciones, sugerencia_horario
