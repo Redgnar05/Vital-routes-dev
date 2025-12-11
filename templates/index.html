@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero-section">
+  
+  <img src="{{ url_for('static', filename='img/logo.png') }}" 
+       alt="Vital Routes Dev Logo" 
+       class="hero-logo">
+
+  <h1 class="hero-title">Vital Routes Dev</h1>
+  <p class="hero-subtitle">Monitoreo ambiental para la salud</p>
+
+  <p class="hero-description">
+    Conoce la calidad del aire, ruido y clima en tu ruta diaria.
+    Recibe recomendaciones inteligentes adaptadas a tu salud y estilo de vida.
+  </p>
+
+  <a href="{{ url_for('login') }}" class="btn-start">Comenzar</a>
+</section>
+
+<section class="info-section">
+  <h2>¿Por qué usar esta app?</h2>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>🚫 Evita zonas riesgosas</h3>
+      <p>Identifica áreas con alta contaminación o niveles de ruido elevados.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>❤️ Cuida tu salud</h3>
+      <p>Reduce riesgos basados en tu perfil personal y condiciones médicas.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>🤖 IA que te acompaña</h3>
+      <p>Recomendaciones inteligentes según clima, aire, ruido y tu historial.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
