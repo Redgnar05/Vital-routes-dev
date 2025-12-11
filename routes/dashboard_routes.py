@@ -68,8 +68,22 @@ def init_dashboard_routes(app):
             datos = {
                 "edad": request.form.get("edad"),
                 "sexo": request.form.get("sexo"),
+
+                "asma": "Si" if request.form.get("asma") else "No",
+                "alergias": "Si" if request.form.get("alergias") else "No",
+                "hipertension": "Si" if request.form.get("hipertension") else "No",
+                "diabetes": "Si" if request.form.get("diabetes") else "No",
                 "respiratorio": "Si" if request.form.get("respiratorio") else "No",
+
                 "actividad": request.form.get("actividad"),
+                "aire_libre": request.form.get("aire_libre"),
+
+                "sensible_calor": "Si" if request.form.get("sensible_calor") else "No",
+                "sensible_frio": "Si" if request.form.get("sensible_frio") else "No",
+                "sensibilidad_ruido": "Si" if request.form.get("sensibilidad_ruido") else "No",
+                "sensibilidad_contaminacion": "Si" if request.form.get("sensibilidad_contaminacion") else "No",
+
+                "transporte": request.form.get("transporte"),
             }
 
             mongo.db.usuarios.update_one(
