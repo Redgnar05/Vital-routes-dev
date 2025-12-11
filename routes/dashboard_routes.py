@@ -22,16 +22,28 @@ def init_dashboard_routes(app):
         resultado = None
         error = None
 
+        # Usuario siempre cargado
+        user = mongo.db.usuarios.find_one({"_id": ObjectId(session["user_id"])})
+
+        riesgo = None  # inicializado
+
         if request.method == "POST":
-            ciudad = request.form.get("ciudad").strip()
-            if ciudad:
+            ciudad = request.form.get("ciudad", "").strip()
+
+            if not ciudad:
+                error = "Ingresa una ciudad."
+            else:
                 clima = obtener_clima(ciudad)
-                if clima:
+                if not clima:
+                    error = "No se pudo obtener el clima."
+                else:
                     aire = obtener_calidad_aire_mock(ciudad)
                     ruido = obtener_ruido_mock(ciudad)
-                    riesgo = calcular_riesgo_salud(clima, aire, ruido)
+
+                    riesgo = calcular_riesgo_salud(clima, aire, ruido, user)
+
                     recomendaciones, sugerencia_horario = generar_recomendaciones(
-                        riesgo, clima, aire, ruido
+                        riesgo, clima, aire, ruido, user
                     )
 
                     resultado = {
@@ -43,18 +55,17 @@ def init_dashboard_routes(app):
                         "recomendaciones": recomendaciones,
                         "sugerencia_horario": sugerencia_horario,
                     }
-                else:
-                    error = "No se pudo obtener el clima."
-            else:
-                error = "Ingresa una ciudad."
 
         return render_template(
             "dashboard.html",
             resultado=resultado,
+            riesgo=riesgo,
             error=error,
             username=session.get("username"),
             logueado=usuario_logueado(),
+            user=user
         )
+
 
     @app.route("/update_profile", methods=["GET", "POST"])
     def update_profile():
