@@ -1,9 +1,17 @@
 Flask==3.1.0
 Flask-PyMongo==3.0.1
-Werkzeug==3.1.0
 requests==2.32.3
+
+# Necesario para conectarse a MongoDB Atlas
 pymongo==4.9.0
 dnspython==2.6.1
+
+# Para variables de entorno
 python-dotenv==1.0.1
+
+# Motor de plantillas
 Jinja2==3.1.4
-gunicorn
+
+# Servidor de producción para Render
+gunicorn==23.0.0
+
