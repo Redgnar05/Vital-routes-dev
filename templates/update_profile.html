@@ -1,78 +1,119 @@
 {% extends "base.html" %}
 {% block content %}
 
-<section class="form-section">
-    <h2>Actualizar perfil de salud</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/update_profile.css') }}">
+
+<section class="profile-container">
+
+    <h2 class="page-title">
+        <i class="fa-solid fa-user-gear"></i> Actualizar perfil de salud
+    </h2>
 
     {% if msg %}
-        <p class="success">{{ msg }}</p>
+        <p class="success-message"><i class="fa-solid fa-circle-check"></i> {{ msg }}</p>
     {% endif %}
 
-    <form action="{{ url_for('update_profile') }}" method="POST">
+    <form action="{{ url_for('update_profile') }}" method="POST" class="profile-form">
 
-        <h3>Datos personales</h3>
-        <label>Edad</label>
-        <input type="number" name="edad" value="{{ user.edad or '' }}" min="1" max="120">
+        <!-- ========================================= -->
+        <!-- SECCIÓN 1: DATOS PERSONALES -->
+        <!-- ========================================= -->
+        <div class="card">
+            <h3><i class="fa-solid fa-id-card"></i> Datos personales</h3>
 
-        <label>Sexo</label>
-        <select name="sexo">
-            <option value="">Seleccione</option>
-            <option value="M" {% if user.sexo == "M" %}selected{% endif %}>Masculino</option>
-            <option value="F" {% if user.sexo == "F" %}selected{% endif %}>Femenino</option>
-            <option value="Otro" {% if user.sexo == "Otro" %}selected{% endif %}>Otro</option>
-        </select>
+            <label>Edad</label>
+            <input type="number" name="edad" min="1" max="120" value="{{ user.edad or '' }}" required>
 
-        <h3>Condiciones de salud</h3>
-
-        <label>¿Padeces alguna de estas condiciones?</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" name="asma" {% if user.asma == "Si" %}checked{% endif %}> Asma</label>
-            <label><input type="checkbox" name="alergias" {% if user.alergias == "Si" %}checked{% endif %}> Alergias</label>
-            <label><input type="checkbox" name="hipertension" {% if user.hipertension == "Si" %}checked{% endif %}> Hipertensión</label>
-            <label><input type="checkbox" name="diabetes" {% if user.diabetes == "Si" %}checked{% endif %}> Diabetes</label>
-            <label><input type="checkbox" name="respiratorio" {% if user.respiratorio == "Si" %}checked{% endif %}> Problemas respiratorios</label>
+            <label>Sexo</label>
+            <select name="sexo" required>
+                <option value="">Seleccione</option>
+                <option value="M" {% if user.sexo == "M" %}selected{% endif %}>Masculino</option>
+                <option value="F" {% if user.sexo == "F" %}selected{% endif %}>Femenino</option>
+                <option value="Otro" {% if user.sexo == "Otro" %}selected{% endif %}>Otro</option>
+            </select>
         </div>
 
-        <h3>Hábitos y estilo de vida</h3>
 
-        <label>Nivel de actividad física</label>
-        <select name="actividad">
-            <option value="Sedentario" {% if user.actividad == "Sedentario" %}selected{% endif %}>Sedentario</option>
-            <option value="Ligero" {% if user.actividad == "Ligero" %}selected{% endif %}>Actividad ligera</option>
-            <option value="Moderado" {% if user.actividad == "Moderado" %}selected{% endif %}>Actividad moderada</option>
-            <option value="Alto" {% if user.actividad == "Alto" %}selected{% endif %}>Actividad intensa</option>
-        </select>
+        <!-- ========================================= -->
+        <!-- SECCIÓN 2: CONDICIONES DE SALUD -->
+        <!-- ========================================= -->
+        <div class="card">
+            <h3><i class="fa-solid fa-heart-pulse"></i> Condiciones de salud</h3>
 
-        <label>Tiempo promedio al aire libre (por día)</label>
-        <select name="aire_libre">
-            <option value="Menos de 1h" {% if user.aire_libre == "Menos de 1h" %}selected{% endif %}>Menos de 1 hora</option>
-            <option value="1-2h" {% if user.aire_libre == "1-2h" %}selected{% endif %}>1 a 2 horas</option>
-            <option value="2-4h" {% if user.aire_libre == "2-4h" %}selected{% endif %}>2 a 4 horas</option>
-            <option value="Más de 4h" {% if user.aire_libre == "Más de 4h" %}selected{% endif %}>Más de 4 horas</option>
-        </select>
+            <p class="info-text">Marca las condiciones que padeces actualmente:</p>
 
-        <h3>Sensibilidad ambiental</h3>
-
-        <label>¿Eres sensible a…?</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" name="sensible_calor" {% if user.sensible_calor == "Si" %}checked{% endif %}> Calor</label>
-            <label><input type="checkbox" name="sensible_frio" {% if user.sensible_frio == "Si" %}checked{% endif %}> Frío</label>
-            <label><input type="checkbox" name="sensibilidad_ruido" {% if user.sensibilidad_ruido == "Si" %}checked{% endif %}> Ruido</label>
-            <label><input type="checkbox" name="sensibilidad_contaminacion" {% if user.sensibilidad_contaminacion == "Si" %}checked{% endif %}> Contaminación</label>
+            <div class="checkbox-grid">
+                <label><input type="checkbox" name="asma" {% if user.asma == "Si" %}checked{% endif %}> Asma</label>
+                <label><input type="checkbox" name="alergias" {% if user.alergias == "Si" %}checked{% endif %}> Alergias</label>
+                <label><input type="checkbox" name="hipertension" {% if user.hipertension == "Si" %}checked{% endif %}> Hipertensión</label>
+                <label><input type="checkbox" name="diabetes" {% if user.diabetes == "Si" %}checked{% endif %}> Diabetes</label>
+                <label><input type="checkbox" name="respiratorio" {% if user.respiratorio == "Si" %}checked{% endif %}> Problemas respiratorios</label>
+            </div>
         </div>
 
-        <h3>Movilidad y transporte</h3>
 
-        <label>Método de transporte principal</label>
-        <select name="transporte">
-            <option value="">Seleccione</option>
-            <option value="Caminata" {% if user.transporte == "Caminata" %}selected{% endif %}>Caminata</option>
-            <option value="Bicicleta" {% if user.transporte == "Bicicleta" %}selected{% endif %}>Bicicleta</option>
-            <option value="Transporte público" {% if user.transporte == "Transporte público" %}selected{% endif %}>Transporte público</option>
-            <option value="Automóvil" {% if user.transporte == "Automóvil" %}selected{% endif %}>Automóvil</option>
-        </select>
+        <!-- ========================================= -->
+        <!-- SECCIÓN 3: HÁBITOS Y ESTILO DE VIDA -->
+        <!-- ========================================= -->
+        <div class="card">
+            <h3><i class="fa-solid fa-person-walking"></i> Hábitos y estilo de vida</h3>
 
-        <button type="submit" class="btn-main">Guardar información</button>
+            <label>Nivel de actividad física</label>
+            <select name="actividad">
+                <option value="Sedentario" {% if user.actividad == "Sedentario" %}selected{% endif %}>Sedentario</option>
+                <option value="Ligero" {% if user.actividad == "Ligero" %}selected{% endif %}>Actividad ligera</option>
+                <option value="Moderado" {% if user.actividad == "Moderado" %}selected{% endif %}>Actividad moderada</option>
+                <option value="Alto" {% if user.actividad == "Alto" %}selected{% endif %}>Actividad intensa</option>
+            </select>
+
+            <label>Tiempo promedio al aire libre</label>
+            <select name="aire_libre">
+                <option value="Menos de 1h" {% if user.aire_libre == "Menos de 1h" %}selected{% endif %}>Menos de 1 hora</option>
+                <option value="1-2h" {% if user.aire_libre == "1-2h" %}selected{% endif %}>1 a 2 horas</option>
+                <option value="2-4h" {% if user.aire_libre == "2-4h" %}selected{% endif %}>2 a 4 horas</option>
+                <option value="Más de 4h" {% if user.aire_libre == "Más de 4h" %}selected{% endif %}>Más de 4 horas</option>
+            </select>
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- SECCIÓN 4: SENSIBILIDADES AMBIENTALES -->
+        <!-- ========================================= -->
+        <div class="card">
+            <h3><i class="fa-solid fa-temperature-half"></i> Sensibilidad ambiental</h3>
+
+            <p class="info-text">Marca aquello a lo que eres más sensible:</p>
+
+            <div class="checkbox-grid">
+                <label><input type="checkbox" name="sensible_calor" {% if user.sensible_calor == "Si" %}checked{% endif %}> Calor</label>
+                <label><input type="checkbox" name="sensible_frio" {% if user.sensible_frio == "Si" %}checked{% endif %}> Frío</label>
+                <label><input type="checkbox" name="sensibilidad_ruido" {% if user.sensibilidad_ruido == "Si" %}checked{% endif %}> Ruido</label>
+                <label><input type="checkbox" name="sensibilidad_contaminacion" {% if user.sensibilidad_contaminacion == "Si" %}checked{% endif %}> Contaminación</label>
+            </div>
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- SECCIÓN 5: MOVILIDAD -->
+        <!-- ========================================= -->
+        <div class="card">
+            <h3><i class="fa-solid fa-bus"></i> Movilidad y transporte</h3>
+
+            <label>Método de transporte principal</label>
+            <select name="transporte">
+                <option value="">Seleccione</option>
+                <option value="Caminata" {% if user.transporte == "Caminata" %}selected{% endif %}>Caminata</option>
+                <option value="Bicicleta" {% if user.transporte == "Bicicleta" %}selected{% endif %}>Bicicleta</option>
+                <option value="Transporte público" {% if user.transporte == "Transporte público" %}selected{% endif %}>Transporte público</option>
+                <option value="Automóvil" {% if user.transporte == "Automóvil" %}selected{% endif %}>Automóvil</option>
+            </select>
+        </div>
+
+        <!-- BOTÓN -->
+        <button type="submit" class="btn-save">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar información
+        </button>
+
     </form>
 </section>
 
