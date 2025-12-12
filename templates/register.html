@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-animated"></div>
+
+<section class="form-section">
+  <h2>Crear cuenta</h2>
+
+  {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+  {% endif %}
+
+  <form action="{{ url_for('register') }}" method="POST">
+
+    <!-- USUARIO -->
+    <label for="username">Usuario</label>
+    <div class="input-icon">
+      <img
+        src="https://img.icons8.com/ultraviolet/40/user.png"
+        alt="icono usuario"
+      >
+      <input
+        type="text"
+        name="username"
+        id="username"
+        required
+      >
+    </div>
+
+    <!-- CONTRASEÑA -->
+    <label for="password">Contraseña</label>
+    <div class="input-icon">
+      <img
+        src="https://img.icons8.com/ultraviolet/40/password.png"
+        alt="icono contraseña"
+      >
+      <input
+        type="password"
+        name="password"
+        id="password"
+        required
+      >
+    </div>
+
+    <button type="submit" class="btn-main">Registrar</button>
+  </form>
+
+  <p class="form-footer">
+    ¿Ya tienes cuenta?
+    <a href="{{ url_for('login') }}">Inicia sesión</a>
+  </p>
+</section>
+
+{% endblock %}
