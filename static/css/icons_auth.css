@@ -1,0 +1,171 @@
+
+h2, label {
+    color: #7b112c;
+    
+}
+
+/* ===========================
+   LOGIN INPUTS CON ICONOS
+   =========================== */
+
+.login-form {
+  max-width: 420px;
+  margin: 2rem auto;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #f9fafb;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 1rem;
+  transition: 0.25s;
+}
+
+.input-group img {
+  width: 26px;
+  height: 26px;
+  opacity: 0.85;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.4rem;
+}
+
+/* Efecto focus */
+.input-group:focus-within {
+  border-color: #52B69A;
+  box-shadow: 0 0 0 2px #52b69a33;
+}
+
+/* Footer del formulario */
+.form-footer {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.form-footer a {
+  color: #168AAD;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+
+/* ===========================
+   REGISTER INPUTS CON ICONOS
+   =========================== */
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #f8fafc;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+}
+
+.input-icon img {
+  width: 28px;
+  height: 28px;
+}
+
+.input-icon input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.form-footer {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.form-footer a {
+  color: #1e6091;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+
+
+/* ===============================
+   NAVBAR / LOGO
+================================ */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(90deg, #184e77, #1e6091);
+}
+
+/* Marca */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+/* Logo */
+.nav-brand img {
+  height: 38px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+
+/* ===============================
+   Ajustes del menú derecho
+================================ */
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-menu a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+  color: #d9ed92;
+}
+
+.username {
+  font-weight: 600;
+  color: #b5e48c;
+}
+
+.user-icon {
+  font-size: 1.1rem;
+}
+
+

@@ -1,0 +1,356 @@
+/* ============================================================
+   🌐 ESTILOS GLOBALES
+   ============================================================ */
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f2f5f7;
+  color: #222;
+}
+
+/* ============================================================
+   🔵 NAVEGACIÓN Y HEADER
+   ============================================================ */
+.header {
+  background: #1E6091;
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #184E77;
+  color: white;
+  align-items: center;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-menu a,
+.nav-brand {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ============================================================
+   🧱 LAYOUT GENERAL
+   ============================================================ */
+.main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================================
+   📝 FORMULARIOS
+   ============================================================ */
+.form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form input,
+.form select {
+  padding: 0.9rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn-main {
+  padding: 0.9rem 1.4rem;
+  background: #52B69A;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+}
+
+.btn-main:hover {
+  background: #3a8c7f;
+}
+
+/* ============================================================
+   📊 GRID DE RESULTADOS
+   ============================================================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.box {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+/* ============================================================
+   🚦 RIESGO GLOBAL
+   ============================================================ */
+.riesgo-verde { background: #d9f99d; }
+.riesgo-amarillo { background: #fef08a; }
+.riesgo-rojo { background: #fecaca; }
+
+/* ============================================================
+   👤 PERFIL DEL USUARIO
+   ============================================================ */
+.perfil-usuario {
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 14px;
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   📉 BARRA DE RIESGO PERSONAL
+   ============================================================ */
+.barra-riesgo {
+  width: 100%;
+  height: 18px;
+  background: #ddd;
+  border-radius: 10px;
+}
+
+.barra-riesgo .nivel {
+  height: 100%;
+  border-radius: 10px;
+}
+
+.barra-riesgo .verde { background: #5cb85c; }
+.barra-riesgo .amarillo { background: #f0ad4e; }
+.barra-riesgo .rojo { background: #d9534f; }
+
+/* ============================================================
+   🦶 FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 1rem 0;
+  color: #555;
+}
+
+/* ===== NAV GENERAL ===== */
+.navbar {
+    background: #005f85;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;   /* Permite que se adapte en celulares */
+}
+
+
+
+/* ===== ENLACES ===== */
+.navbar {
+    background: #005f85;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: all .25s ease;
+}
+
+.nav-menu a:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+}
+
+.user-icon {
+    font-size: 1.2rem;
+}
+
+.username {
+    color: white;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+}
+
+
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: all 0.25s ease;
+}
+
+/* Hover moderno */
+.navbar a:hover {
+    background: rgba(255,255,255,0.18);
+    transform: translateY(-2px);
+}
+
+/* Ícono del usuario */
+.navbar .user-icon {
+    font-size: 1.2rem;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* ===== VERSIÓN RESPONSIVA PARA CELULARES ===== */
+@media (max-width: 600px) {
+    .navbar {
+        justify-content: center;
+        gap: 15px;
+        padding: 14px;
+    }
+
+    .navbar a {
+        font-size: 0.9rem;
+        padding: 10px 16px;
+    }
+}
+
+
+
+
+
+/* ============================================================
+   📱📱📱 RESPONSIVE DESIGN
+   Breakpoints para tablets y celulares
+   ============================================================ */
+
+/* ============================
+   📌 TABLETS (≤ 768px)
+   ============================ */
+@media (max-width: 768px) {
+
+  .nav {
+    padding: 1rem;
+  }
+
+  .nav-menu {
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .main {
+    margin-top: 1rem;
+  }
+
+  .card {
+    padding: 1.2rem;
+  }
+
+  .perfil-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ============================
+   📌 CELULARES (≤ 480px)
+   ============================ */
+@media (max-width: 480px) {
+
+  /* NAV */
+  .nav {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .nav-menu {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.25rem;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  /* CARDS */
+  .card {
+    padding: 1rem;
+  }
+
+  /* GRID */
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-grid {
+    grid-template-columns: 1fr; /* T TODO EN UNA COLUMNA */
+  }
+
+  /* BUTTONS */
+  .btn-main {
+    width: 100%;
+  }
+
+  /* INPUTS MÁS GRANDES */
+  .form input,
+  .form select {
+    padding: 1rem;
+    font-size: 1.05rem;
+  }
+
+  /* TITULOS */
+  h2, h3 {
+    text-align: center;
+  }
+}
